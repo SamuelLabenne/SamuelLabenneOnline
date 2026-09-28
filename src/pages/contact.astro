@@ -1,5 +1,5 @@
 ---
-import { Clock, Coffee, ArrowUpRight } from '@lucide/astro';
+import { ArrowUpRight } from '@lucide/astro';
 import Base from '../layouts/Base.astro';
 import Avatar from '../components/Avatar.astro';
 import CopyEmail from '../components/CopyEmail.astro';
@@ -12,7 +12,7 @@ const include = [
 ];
 
 const steps = [
-  'I reply, usually within a day.',
+  'I reply to set up a first conversation.',
   'We map what your business actually needs.',
   'You get a clear proposal: scope, timeline and price.',
 ];
@@ -20,12 +20,12 @@ const steps = [
 
 <Base
   title="Contact"
-  description="Available for new projects. Email Sam Labenne about websites, webshops, Odoo or Salesforce."
+  description="Email Sam Labenne about websites, webshops, Odoo or Salesforce, including CPQ and Revenue Cloud."
 >
   <section class="page-hero">
     <div class="glow" aria-hidden="true"></div>
     <div class="container narrow">
-      <p class="eyebrow reveal"><span class="dot" aria-hidden="true"></span>Available for new projects</p>
+      <p class="eyebrow reveal">Contact</p>
       <h1 class="display reveal" style="--d:1">Let’s build something that works.</h1>
     </div>
   </section>
@@ -38,10 +38,6 @@ const steps = [
         <div class="actions center">
           <a class="btn btn-primary" href={mailto()}>Email me</a>
           <CopyEmail label="Copy address" />
-        </div>
-        <div class="notes">
-          <span><Clock /> Usually replies within a day.</span>
-          <span><Coffee /> Coffee works too.</span>
         </div>
         <p class="linkedin">
           Prefer LinkedIn?{' '}
@@ -68,19 +64,6 @@ const steps = [
 </Base>
 
 <style>
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #34c47c;
-  }
-
   .contact-section {
     padding-top: 0;
   }
@@ -97,7 +80,7 @@ const steps = [
   }
 
   .linkedin {
-    margin-top: 18px;
+    margin-top: 24px;
     font-size: 15px;
     color: var(--muted);
   }
@@ -138,27 +121,6 @@ const steps = [
 
   .mail-card .actions {
     margin-top: 32px;
-  }
-
-  .notes {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px 28px;
-    margin-top: 28px;
-    color: var(--muted);
-    font-size: 15px;
-  }
-
-  .notes span {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .notes :global(svg) {
-    width: 18px;
-    height: 18px;
   }
 
   .columns {

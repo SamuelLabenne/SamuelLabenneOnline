@@ -15,12 +15,12 @@ import { services } from '../data/services';
 const icons = { websites: PenTool, webshops: ShoppingBag, odoo: Boxes, salesforce: Cloud };
 
 const odooModules = ['Sales', 'Inventory', 'Invoicing', 'Accounting', 'Custom module'];
-const stages = [
-  { name: 'Lead', count: 42, w: 100 },
-  { name: 'Qualified', count: 23, w: 62 },
-  { name: 'Proposal', count: 11, w: 38 },
-  { name: 'Closed won', count: 7, w: 24 },
+const quoteLines = [
+  { item: 'Platform licence × 25', amount: '€18,750' },
+  { item: 'Onboarding package', amount: '€4,500' },
+  { item: 'Volume discount 10%', amount: '−€2,325', note: 'Approved' },
 ];
+const quoteToCash = ['Quote', 'Contract', 'Order', 'Invoice'];
 
 const faqs = [
   {
@@ -48,7 +48,7 @@ const faqs = [
 
 <Base
   title="Services"
-  description="Website creation, webshop setup on Wix and Shopify, Odoo implementation and Salesforce implementation. One partner from first pixel to signed invoice."
+  description="Website creation, webshop setup on Wix and Shopify, Odoo implementation, and Salesforce implementation including CPQ and Revenue Cloud for the full quote-to-cash cycle."
 >
   <section class="page-hero">
     <div class="glow" aria-hidden="true"></div>
@@ -180,18 +180,32 @@ const faqs = [
                   </div>
                 )}
                 {s.id === 'salesforce' && (
-                  <div class="pipe">
-                    <div class="mod-head">Opportunity pipeline</div>
-                    {stages.map((st, j) => (
-                      <div class="stage-row" style={`--j:${j}`}>
-                        <span>{st.name}</span>
-                        <b style={`--w:${st.w}%`} />
-                        <em>{st.count}</em>
+                  <div class="q2c">
+                    <div class="quote-head" style="--j:0">
+                      <span class="mod-head">Quote Q-00318</span>
+                      <span class="pill">Configured</span>
+                    </div>
+                    {quoteLines.map((l, j) => (
+                      <div class="quote-line" style={`--j:${0.6 + j * 0.5}`}>
+                        <span>
+                          {l.item}
+                          {l.note && <em class="approved"><Check /> {l.note}</em>}
+                        </span>
+                        <span>{l.amount}</span>
                       </div>
                     ))}
-                    <div class="flow-badge" style="--j:4">
-                      <Check /> Follow-up flow runs automatically
+                    <div class="quote-line total" style="--j:2.2">
+                      <span>Total</span>
+                      <span>€20,925</span>
                     </div>
+                    <ol class="chain">
+                      {quoteToCash.map((step, j) => (
+                        <li style={`--j:${2.8 + j * 0.45}`}>
+                          <span class="chain-dot"><Check /></span>
+                          {step}
+                        </li>
+                      ))}
+                    </ol>
                   </div>
                 )}
               </div>
@@ -499,7 +513,7 @@ const faqs = [
 
   /* Odoo apps */
   .modules,
-  .pipe {
+  .q2c {
     display: grid;
     gap: 10px;
   }
@@ -541,45 +555,91 @@ const faqs = [
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 
-  /* Salesforce pipeline */
-  .stage-row {
-    display: grid;
-    grid-template-columns: 90px 1fr 28px;
-    align-items: center;
-    gap: 12px;
-    font-size: 14px;
-    font-weight: 500;
-  }
-
-  .stage-row b {
-    height: 12px;
-    width: var(--w);
-    border-radius: 99px;
-    background: var(--grad-bar);
-  }
-
-  .stage-row em {
-    font-style: normal;
-    color: var(--faint);
-    text-align: right;
-  }
-
-  .flow-badge {
+  /* Salesforce quote-to-cash */
+  .quote-head {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    margin-top: 12px;
-    padding: 12px 14px;
-    border-radius: 14px;
+  }
+
+  .quote-head .mod-head {
+    margin: 0;
+  }
+
+  .pill {
+    padding: 4px 10px;
+    border-radius: 999px;
     background: #e9f8f1;
     color: #0e8a5f;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
   }
 
-  .flow-badge :global(svg) {
-    width: 18px;
-    height: 18px;
+  .quote-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+
+  .quote-line.total {
+    border-bottom: 0;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .approved {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 8px;
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0e8a5f;
+  }
+
+  .approved :global(svg) {
+    width: 13px;
+    height: 13px;
+  }
+
+  .chain {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+  }
+
+  .chain li {
+    display: grid;
+    justify-items: center;
+    gap: 6px;
+    padding: 12px 6px;
+    border-radius: 14px;
+    background: var(--bg-soft);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .chain-dot {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--grad-light);
+  }
+
+  .chain-dot :global(svg) {
+    width: 14px;
+    height: 14px;
   }
 
   @media (max-width: 860px) {

@@ -26,7 +26,17 @@ const person = {
   url: new URL(url('/'), Astro.site).href,
   email: `mailto:${SITE.email}`,
   sameAs: [SITE.linkedin, SITE.work.url].filter(Boolean),
-  knowsAbout: ['Web design', 'Web development', 'Shopify', 'Wix', 'Odoo', 'Salesforce'],
+  knowsAbout: [
+    'Web design',
+    'Web development',
+    'Shopify',
+    'Wix',
+    'Odoo',
+    'Salesforce',
+    'Salesforce CPQ',
+    'Salesforce Revenue Cloud',
+    'Quote-to-cash',
+  ],
 };
 ---
 

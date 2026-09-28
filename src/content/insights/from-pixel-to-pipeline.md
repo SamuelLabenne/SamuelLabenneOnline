@@ -33,4 +33,4 @@ I work on my own, on purpose. There's no account manager between us and no telep
 
 ## Let's talk
 
-If you're planning a new site, a webshop, or finally connecting the tools you already have, [get in touch](../../contact/). I usually reply within a day. Coffee works too.
+If you're planning a new site, a webshop, or finally connecting the tools you already have, [get in touch](../../contact/).

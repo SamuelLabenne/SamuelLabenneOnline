@@ -1,6 +1,6 @@
 ---
 import { ChevronRight, ShoppingBag, Check } from '@lucide/astro';
-import { SITE, url, mailto } from '../../config/site';
+import { url, mailto } from '../../config/site';
 
 const products = [
   { name: 'Linen Overshirt', price: '€89', hue: 150 },
@@ -22,7 +22,6 @@ const pipeline = [
   <div class="glow" aria-hidden="true"></div>
 
   <div class="hero-copy container">
-    <p class="eyebrow"><span class="dot" aria-hidden="true"></span>{SITE.role}</p>
     <h1 class="display">From pixel<br />to <span class="gradient-text">pipeline.</span></h1>
     <p class="lede">
       Websites that convert. Webshops that sell. Odoo and Salesforce that keep the whole thing
@@ -114,30 +113,6 @@ const pipeline = [
     transform: translate3d(0, calc(var(--p) * -60px), 0) scale(calc(1 - var(--p) * 0.04));
     opacity: calc(1 - var(--p) * 0.9);
     animation: rise 1.2s var(--ease) backwards;
-  }
-
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #34c47c;
-    box-shadow: 0 0 0 0 rgba(52, 196, 124, 0.5);
-    animation: pulse 2.4s infinite;
-  }
-
-  @keyframes pulse {
-    70% {
-      box-shadow: 0 0 0 8px rgba(52, 196, 124, 0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(52, 196, 124, 0);
-    }
   }
 
   .hero-copy .lede {

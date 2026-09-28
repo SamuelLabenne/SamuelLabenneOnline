@@ -3,9 +3,8 @@ export const SITE = {
   name: 'Sam Labenne',
   fullName: 'Samuel Labenne',
   tagline: 'From pixel to pipeline',
-  role: 'Digital builder, available for projects',
   description:
-    'Sam Labenne builds websites, webshops (Wix & Shopify), and implements Odoo & Salesforce. One partner from first pixel to signed invoice.',
+    'Sam Labenne builds websites, webshops (Wix & Shopify), and implements Odoo & Salesforce, including CPQ and Revenue Cloud. One partner from first pixel to signed invoice.',
   email: 'labenne.sam@gmail.com',
   linkedin: 'https://www.linkedin.com/in/samuel-labenne-679512225/',
   work: { name: 'Ksara Events', url: 'https://ksaraevents.com' },
