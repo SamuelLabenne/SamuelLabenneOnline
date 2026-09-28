@@ -5,7 +5,7 @@ export const SITE = {
   tagline: 'From pixel to pipeline',
   description:
     'Sam Labenne builds websites, webshops (Wix & Shopify), and implements Odoo & Salesforce, including CPQ and Revenue Cloud. One partner from first pixel to signed invoice.',
-  email: 'labenne.sam@gmail.com',
+  email: 'samulab@proton.me',
   linkedin: 'https://www.linkedin.com/in/samuel-labenne-679512225/',
   work: { name: 'Ksara Events', url: 'https://ksaraevents.com' },
   // Set to false to keep search engines out (e.g. while testing a redesign).
