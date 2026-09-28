@@ -1,5 +1,5 @@
 ---
-import Logo from './Logo.astro';
+import Avatar from './Avatar.astro';
 import CopyEmail from './CopyEmail.astro';
 import { mailto } from '../config/site';
 
@@ -15,8 +15,8 @@ const {
 
 <section class="cta section" data-scroll="enter" data-start="1" data-end="0.45">
   <div class="container narrow center">
-    <div class="mark" aria-hidden="true">
-      <Logo id="cta-logo" size={96} />
+    <div class="mark">
+      <Avatar size={112} />
     </div>
     <h2 class="headline reveal">{title}</h2>
     <p class="lede reveal" style="--d:1">{text}</p>
@@ -34,16 +34,13 @@ const {
     perspective: 900px;
   }
 
+  /* The headshot swings forward out of depth as the section scrolls in. */
   .mark {
     display: inline-block;
-    margin-bottom: 36px;
-    transform: rotateY(calc((1 - var(--p)) * -70deg)) rotateX(calc((1 - var(--p)) * 25deg))
-      scale(calc(0.7 + var(--p) * 0.3));
-    filter: drop-shadow(0 20px 30px rgba(60, 150, 70, calc(0.15 + var(--p) * 0.15)));
-  }
-
-  .mark :global(svg) {
-    border-radius: 26px;
+    margin-bottom: 32px;
+    transform: rotateY(calc((1 - var(--p)) * -28deg)) rotateX(calc((1 - var(--p)) * 14deg))
+      scale(calc(0.8 + var(--p) * 0.2));
+    opacity: calc(0.3 + var(--p) * 0.7);
   }
 
   .lede {

@@ -7,8 +7,7 @@ export const SITE = {
   description:
     'Sam Labenne builds websites, webshops (Wix & Shopify), and implements Odoo & Salesforce. One partner from first pixel to signed invoice.',
   email: 'labenne.sam@gmail.com',
-  // TODO: add a LinkedIn profile URL.
-  linkedin: '',
+  linkedin: 'https://www.linkedin.com/in/samuel-labenne-679512225/',
   work: { name: 'Ksara Events', url: 'https://ksaraevents.com' },
   // Keep search engines out while the site lives on the github.io staging URL.
   // Flip to true at domain launch.
@@ -16,10 +15,9 @@ export const SITE = {
   // Google Analytics 4 measurement ID (e.g. 'G-XXXXXXXXXX'). Only loaded after a
   // visitor accepts cookies in the consent banner. Empty = no analytics at all.
   analyticsId: '',
-  // Optional business details shown in the privacy policy (e.g. a VAT or
-  // company number once you invoice under one).
+  // Business details shown in the footer and privacy policy.
   legal: {
-    registration: '',
+    registration: 'ABN 12 415 125 386',
     address: '',
   },
   policiesUpdated: '2026-09-28',

@@ -1,6 +1,7 @@
 ---
-import { Mail, Clock, Coffee } from '@lucide/astro';
+import { Clock, Coffee, ArrowUpRight } from '@lucide/astro';
 import Base from '../layouts/Base.astro';
+import Avatar from '../components/Avatar.astro';
 import CopyEmail from '../components/CopyEmail.astro';
 import { SITE, mailto } from '../config/site';
 
@@ -32,7 +33,7 @@ const steps = [
   <section class="section contact-section">
     <div class="container narrow">
       <div class="mail-card reveal" data-tilt="3">
-        <span class="mail-icon" aria-hidden="true"><Mail /></span>
+        <div class="mail-avatar"><Avatar size={104} /></div>
         <a class="address" href={mailto()}>{SITE.email}</a>
         <div class="actions center">
           <a class="btn btn-primary" href={mailto()}>Email me</a>
@@ -42,6 +43,10 @@ const steps = [
           <span><Clock /> Usually replies within a day.</span>
           <span><Coffee /> Coffee works too.</span>
         </div>
+        <p class="linkedin">
+          Prefer LinkedIn?{' '}
+          <a href={SITE.linkedin} target="_blank" rel="noopener">Connect with me <ArrowUpRight /></a>
+        </p>
       </div>
 
       <div class="columns">
@@ -87,19 +92,32 @@ const steps = [
     background: var(--grad-soft);
   }
 
-  .mail-icon {
-    display: inline-grid;
-    place-items: center;
-    width: 64px;
-    height: 64px;
-    border-radius: 20px;
-    background: var(--grad-light);
+  .mail-avatar {
     margin-bottom: 24px;
   }
 
-  .mail-icon :global(svg) {
-    width: 28px;
-    height: 28px;
+  .linkedin {
+    margin-top: 18px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .linkedin a {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .linkedin a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .linkedin :global(svg) {
+    width: 16px;
+    height: 16px;
   }
 
   .address {

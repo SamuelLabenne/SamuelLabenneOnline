@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import headshot from '../assets/sam-labenne-headshot.jpg';
+
+interface Props {
+  size?: number;
+}
+const { size = 96 } = Astro.props;
+---
+
+<span class="avatar" style={`--size:${size}px`}>
+  <Image
+    src={headshot}
+    alt="Sam Labenne"
+    width={size}
+    height={size}
+    densities={[1, 2]}
+    format="webp"
+    quality={82}
+  />
+</span>
+
+<style>
+  .avatar {
+    display: inline-grid;
+    width: var(--size);
+    height: var(--size);
+    padding: 3px;
+    border-radius: 50%;
+    background: var(--grad-light);
+    box-shadow: 0 12px 30px rgba(40, 120, 60, 0.18);
+  }
+
+  .avatar :global(img) {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    object-fit: cover;
+  }
+</style>

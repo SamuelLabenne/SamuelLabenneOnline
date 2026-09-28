@@ -62,7 +62,10 @@ const columns = [
     </div>
 
     <div class="footer-bottom">
-      <p>© {year} {SITE.fullName}. All rights reserved.</p>
+      <p>
+        © {year} {SITE.fullName}{SITE.legal.registration && <> · {SITE.legal.registration}</>}. All
+        rights reserved.
+      </p>
       <ul class="legal">
         <li><a href={url('/privacy/')}>Privacy policy</a></li>
         <li><a href={url('/cookies/')}>Cookie policy</a></li>
