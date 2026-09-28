@@ -1,0 +1,180 @@
+---
+import {
+  PenTool,
+  Code,
+  Search,
+  Server,
+  ShoppingBag,
+  LayoutTemplate,
+  CreditCard,
+  Workflow,
+  Handshake,
+  Boxes,
+  ReceiptText,
+  Puzzle,
+  Cloud,
+  GitBranch,
+  ChartColumn,
+  Plug,
+} from '@lucide/astro';
+
+// Four disciplines, four skills each. One row per discipline.
+const disciplines = [
+  {
+    name: 'Websites',
+    hue: 152,
+    items: [
+      { name: 'Design', Icon: PenTool },
+      { name: 'Development', Icon: Code },
+      { name: 'SEO', Icon: Search },
+      { name: 'Hosting', Icon: Server },
+    ],
+  },
+  {
+    name: 'Webshops',
+    hue: 126,
+    items: [
+      { name: 'Shopify', Icon: ShoppingBag },
+      { name: 'Wix', Icon: LayoutTemplate },
+      { name: 'Payments', Icon: CreditCard },
+      { name: 'Automation', Icon: Workflow },
+    ],
+  },
+  {
+    name: 'Odoo',
+    hue: 98,
+    items: [
+      { name: 'CRM', Icon: Handshake },
+      { name: 'Inventory', Icon: Boxes },
+      { name: 'Invoicing', Icon: ReceiptText },
+      { name: 'Custom modules', Icon: Puzzle },
+    ],
+  },
+  {
+    name: 'Salesforce',
+    hue: 66,
+    items: [
+      { name: 'Sales Cloud', Icon: Cloud },
+      { name: 'Flows', Icon: GitBranch },
+      { name: 'Reports', Icon: ChartColumn },
+      { name: 'Integrations', Icon: Plug },
+    ],
+  },
+];
+
+// Hand-tuned depths and drift so the tiles start scattered through space.
+const scatter = [
+  [260, -40, -30], [80, 20, -60], [340, 30, 20], [140, 60, -20],
+  [40, -60, 40], [300, -10, 60], [180, 50, -40], [420, -30, 10],
+  [100, -50, -50], [360, 40, 30], [220, -20, 70], [60, 70, -10],
+  [280, 30, -40], [120, -40, 50], [390, 10, -20], [200, -60, 20],
+];
+
+const tiles = disciplines.flatMap((d) => d.items.map((item) => ({ ...item, group: d.name, hue: d.hue })));
+---
+
+<div class="stack" data-scroll="enter" data-start="1.05" data-end="0.3">
+  <div class="plane">
+    {
+      tiles.map(({ name, group, hue, Icon }, i) => {
+        const [z, x, y] = scatter[i];
+        return (
+          <div class="tile" style={`--z:${z}px;--x:${x}px;--y:${y}px;--hue:${hue}`}>
+            <span class="tile-icon">
+              <Icon />
+            </span>
+            <strong>{name}</strong>
+            <span class="note">{group}</span>
+          </div>
+        );
+      })
+    }
+  </div>
+</div>
+
+<style>
+  .stack {
+    perspective: 1600px;
+    perspective-origin: 50% 30%;
+  }
+
+  .plane {
+    --q: calc(1 - var(--p));
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(10px, 1.4vw, 18px);
+    transform-style: preserve-3d;
+    transform: rotateX(calc(var(--q) * 48deg)) rotateZ(calc(var(--q) * -8deg))
+      scale(calc(0.84 + var(--p) * 0.16));
+    transform-origin: 50% 40%;
+  }
+
+  .tile {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: 14px;
+    padding: clamp(14px, 1.8vw, 20px);
+    border-radius: 20px;
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: 0 calc(var(--q) * 30px + 2px) calc(var(--q) * 60px + 8px)
+      rgba(20, 40, 28, calc(0.06 + var(--q) * 0.1));
+    transform: translate3d(calc(var(--x) * var(--q)), calc(var(--y) * var(--q)), calc(var(--z) * var(--q)));
+    opacity: calc(0.25 + var(--p) * 0.75);
+  }
+
+  .tile-icon {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    color: hsl(var(--hue) 55% 20%);
+    background: linear-gradient(135deg, hsl(var(--hue) 68% 78%), hsl(calc(var(--hue) - 28) 80% 76%));
+    box-shadow: 0 6px 16px hsl(var(--hue) 60% 45% / 0.22);
+  }
+
+  .tile-icon :global(svg) {
+    width: 21px;
+    height: 21px;
+  }
+
+  strong {
+    align-self: end;
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .note {
+    align-self: start;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  @media (max-width: 900px) {
+    .plane {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 420px) {
+    .tile {
+      column-gap: 10px;
+    }
+    .tile-icon {
+      width: 36px;
+      height: 36px;
+    }
+    strong {
+      font-size: 15px;
+    }
+    .note {
+      font-size: 12px;
+    }
+  }
+</style>

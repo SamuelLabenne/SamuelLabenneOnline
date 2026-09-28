@@ -1,0 +1,52 @@
+---
+const facts = [
+  { value: '4', label: 'disciplines' },
+  { value: '1', label: 'point of contact' },
+  { value: '∞', label: 'coffee consumed' },
+];
+---
+
+<dl class="facts">
+  {
+    facts.map((f, i) => (
+      <div class="fact reveal" style={`--d:${i}`}>
+        <dt class="value">{f.value}</dt>
+        <dd class="label">{f.label}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 0;
+    text-align: center;
+  }
+
+  .fact {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .value {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 11vw, 140px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .label {
+    margin: 0;
+    font-size: clamp(15px, 1.6vw, 19px);
+    color: var(--muted);
+  }
+</style>

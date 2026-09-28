@@ -1,0 +1,459 @@
+---
+import { ChevronRight, ShoppingBag, Check } from '@lucide/astro';
+import { SITE, url, mailto } from '../../config/site';
+
+const products = [
+  { name: 'Linen Overshirt', price: '€89', hue: 150 },
+  { name: 'Canvas Tote', price: '€38', hue: 96 },
+  { name: 'Wool Beanie', price: '€29', hue: 58 },
+];
+
+// The order travels from the shop (pixel) to the back office (pipeline).
+const pipeline = [
+  { step: 'Order placed', system: 'Webshop' },
+  { step: 'Sales order created', system: 'Odoo' },
+  { step: 'Stock reserved', system: 'Inventory' },
+  { step: 'Invoice sent', system: 'Accounting' },
+  { step: 'Customer updated', system: 'Salesforce' },
+];
+---
+
+<section class="hero" data-scroll="page" data-end="0.75">
+  <div class="glow" aria-hidden="true"></div>
+
+  <div class="hero-copy container">
+    <p class="eyebrow"><span class="dot" aria-hidden="true"></span>{SITE.role}</p>
+    <h1 class="display">From pixel<br />to <span class="gradient-text">pipeline.</span></h1>
+    <p class="lede">
+      Websites that convert. Webshops that sell. Odoo and Salesforce that keep the whole thing
+      running. One partner, from first pixel to signed invoice.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href={mailto()}>Start a project</a>
+      <a class="link-arrow" href={url('/services/')}>See what I do <ChevronRight /></a>
+    </div>
+  </div>
+
+  <div class="stage container" aria-hidden="true">
+    <div class="window" style={`--n:${pipeline.length}`}>
+      <div class="chrome">
+        <span></span><span></span><span></span>
+        <div class="address">yourshop.com</div>
+      </div>
+      <div class="app">
+        <div class="shop">
+          <div class="shop-bar">
+            <strong>Maison</strong>
+            <nav><span>Shop</span><span>Journal</span><span>About</span></nav>
+            <span class="cart"><ShoppingBag /> 2</span>
+          </div>
+          <div class="banner">
+            <div>
+              <div class="kicker">New season</div>
+              <div class="banner-title">Made to last.</div>
+              <span class="shop-btn">Shop now</span>
+            </div>
+            <span class="blob a"></span>
+            <span class="blob b"></span>
+          </div>
+          <div class="products">
+            {
+              products.map((p) => (
+                <div class="product" style={`--h:${p.hue}`}>
+                  <div class="img" />
+                  <div class="p-name">{p.name}</div>
+                  <div class="p-price">{p.price}</div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="backoffice">
+          <div class="bo-head">
+            <div class="muted">Back office</div>
+            <div class="order">Order #1042</div>
+          </div>
+          <ol class="flow">
+            {
+              pipeline.map((p, i) => (
+                <li style={`--i:${i}`}>
+                  <span class="node">
+                    <Check />
+                  </span>
+                  <div>
+                    <div class="step">{p.step}</div>
+                    <div class="system">{p.system}</div>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+          <div class="total">
+            <span>Paid</span>
+            <strong>€156.00</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="window-shadow"></div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: calc(var(--nav-h) + clamp(44px, 6.5vw, 88px));
+    padding-bottom: clamp(40px, 8vw, 96px);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hero-copy {
+    text-align: center;
+    transform: translate3d(0, calc(var(--p) * -60px), 0) scale(calc(1 - var(--p) * 0.04));
+    opacity: calc(1 - var(--p) * 0.9);
+    animation: rise 1.2s var(--ease) backwards;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #34c47c;
+    box-shadow: 0 0 0 0 rgba(52, 196, 124, 0.5);
+    animation: pulse 2.4s infinite;
+  }
+
+  @keyframes pulse {
+    70% {
+      box-shadow: 0 0 0 8px rgba(52, 196, 124, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(52, 196, 124, 0);
+    }
+  }
+
+  .hero-copy .lede {
+    max-width: 700px;
+    margin: 24px auto 0;
+  }
+
+  .hero-copy .actions {
+    margin-top: 32px;
+    justify-content: center;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 24px, 0);
+    }
+  }
+
+  /* ── The 3D window: tipped back at rest, flattens as the page scrolls ── */
+  .stage {
+    margin-top: clamp(44px, 5vw, 72px);
+    perspective: 1100px;
+    perspective-origin: 50% 0%;
+    position: relative;
+    animation: rise 1.4s 0.15s var(--ease) backwards;
+  }
+
+  .window {
+    position: relative;
+    z-index: 1;
+    max-width: 1080px;
+    margin-inline: auto;
+    border-radius: 22px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    transform-origin: 50% 100%;
+    transform: rotateX(calc((1 - var(--p)) * 30deg)) scale(calc(0.9 + var(--p) * 0.1))
+      translate3d(0, calc((1 - var(--p)) * -24px), 0);
+    will-change: transform;
+    font-size: 12px;
+    letter-spacing: -0.005em;
+    user-select: none;
+  }
+
+  .window-shadow {
+    position: absolute;
+    inset: auto 12% -40px;
+    height: 80px;
+    background: radial-gradient(closest-side, rgba(30, 80, 50, 0.22), transparent);
+    filter: blur(20px);
+    opacity: calc(0.4 + var(--p) * 0.6);
+  }
+
+  .chrome {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--line);
+    background: #fafafc;
+  }
+  .chrome > span {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #e3e3e8;
+  }
+  .address {
+    margin: 0 auto;
+    padding: 4px 40px;
+    border-radius: 7px;
+    background: #efeff3;
+    color: var(--faint);
+    font-size: 11px;
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    min-height: 460px;
+  }
+
+  /* ── Storefront (the pixel side) ── */
+  .shop {
+    padding: 18px 22px 22px;
+    display: grid;
+    gap: 14px;
+    align-content: start;
+  }
+
+  .shop-bar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .shop-bar strong {
+    font-family: var(--font-display);
+    font-size: 16px;
+    letter-spacing: -0.02em;
+  }
+  .shop-bar nav {
+    display: flex;
+    gap: 16px;
+    color: var(--muted);
+    margin-right: auto;
+  }
+  .cart {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+  }
+  .cart :global(svg) {
+    width: 15px;
+    height: 15px;
+  }
+
+  .banner {
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px;
+    padding: 22px;
+    min-height: 150px;
+    background: linear-gradient(120deg, #ecfaf2, #f7fbe6 60%, #fdf8e2);
+  }
+  .kicker {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .banner-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 4px 0 12px;
+  }
+  .shop-btn {
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 500;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+  }
+  .blob.a {
+    width: 150px;
+    height: 150px;
+    right: 60px;
+    top: -10px;
+    background: radial-gradient(circle at 30% 30%, #fff, #74e3a4 70%);
+  }
+  .blob.b {
+    width: 90px;
+    height: 90px;
+    right: 20px;
+    bottom: -20px;
+    background: radial-gradient(circle at 30% 30%, #fff, #f3e26a 70%);
+  }
+
+  .products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .img {
+    aspect-ratio: 1 / 0.8;
+    border-radius: 12px;
+    background:
+      radial-gradient(circle at 50% 45%, hsl(var(--h) 70% 72%) 0 30%, transparent 31%),
+      linear-gradient(160deg, hsl(var(--h) 60% 95%), hsl(var(--h) 55% 88%));
+    margin-bottom: 8px;
+  }
+  .p-name {
+    font-weight: 600;
+  }
+  .p-price {
+    color: var(--muted);
+  }
+
+  /* ── Back office (the pipeline side): steps light up as you scroll ── */
+  .backoffice {
+    border-left: 1px solid var(--line);
+    background: #fbfbfd;
+    padding: 18px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .muted {
+    color: var(--faint);
+    font-size: 11px;
+  }
+  .order {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+
+  .flow {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+    position: relative;
+  }
+  .flow::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 14px;
+    bottom: 14px;
+    width: 2px;
+    background: var(--line);
+  }
+
+  .flow li {
+    --on: clamp(0, calc(var(--p) * (var(--n) + 1) - var(--i)), 1);
+    position: relative;
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 7px 0;
+  }
+  .node {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--line-strong);
+    position: relative;
+    z-index: 1;
+  }
+  .node::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: var(--grad-light);
+    opacity: var(--on);
+    z-index: -1;
+  }
+  .node :global(svg) {
+    width: 13px;
+    height: 13px;
+    color: var(--ink);
+    opacity: var(--on);
+  }
+  .step {
+    font-weight: 600;
+    opacity: calc(0.4 + var(--on) * 0.6);
+  }
+  .system {
+    color: var(--faint);
+    font-size: 11px;
+  }
+
+  .total {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid var(--line);
+    opacity: clamp(0.35, calc(var(--p) * 1.3), 1);
+  }
+  .total span {
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #e9f8f1;
+    color: #0e8a5f;
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .total strong {
+    font-size: 15px;
+  }
+
+  @media (max-width: 900px) {
+    .app {
+      grid-template-columns: 1fr;
+    }
+    .backoffice {
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .window {
+      font-size: 10px;
+      border-radius: 16px;
+    }
+    .shop-bar nav,
+    .banner {
+      display: none;
+    }
+    .products {
+      gap: 8px;
+    }
+    .address {
+      padding: 3px 16px;
+    }
+  }
+</style>

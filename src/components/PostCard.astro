@@ -1,0 +1,213 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { url } from '../config/site';
+import { formatDate } from '../lib/format';
+
+interface Props {
+  post: CollectionEntry<'insights'>;
+  featured?: boolean;
+  index?: number;
+}
+const { post, featured = false, index = 0 } = Astro.props;
+const { title, description, date, category, cover } = post.data;
+
+// One of four cover compositions: set in front matter, otherwise derived from the slug.
+const variant = cover ?? [...post.id].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % 4;
+---
+
+<div class="post-wrap reveal" style={`--d:${index}`}>
+<a href={url(`/insights/${post.id}/`)} class:list={['post-card', { featured }]} data-tilt="4">
+  <div class={`cover v${variant}`} aria-hidden="true">
+    <span class="orb a"></span>
+    <span class="orb b"></span>
+    <span class="cover-label">{category}</span>
+  </div>
+  <div class="content">
+    <p class="meta"><span>{category}</span> · <time datetime={date.toISOString()}>{formatDate(date)}</time></p>
+    <h3>{title}</h3>
+    <p class="desc">{description}</p>
+  </div>
+</a>
+</div>
+
+<style>
+  .post-wrap {
+    height: 100%;
+  }
+
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-sm);
+    height: 100%;
+  }
+
+  .soft .post-card {
+    border-color: transparent;
+  }
+
+  .cover {
+    --c1: #74e3a4;
+    --c2: #f3e26a;
+    --bg1: #ecfaf2;
+    --bg2: #fcf9e5;
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+  }
+
+  .v1 {
+    --c1: #b8ea6c;
+    --c2: #6fd6c1;
+    --bg1: #f4fae6;
+    --bg2: #eaf8f5;
+  }
+  .v2 {
+    --c1: #4fd1a0;
+    --c2: #d6ea6a;
+    --bg1: #e9f9f1;
+    --bg2: #f6fae4;
+  }
+  .v3 {
+    --c1: #f3dc5e;
+    --c2: #f5bb72;
+    --bg1: #fdf9e6;
+    --bg2: #fef4e8;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    transition: transform 0.8s var(--ease);
+  }
+  .orb.a {
+    width: 55%;
+    left: 12%;
+    top: 22%;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--c1) 70%);
+    opacity: 0.9;
+  }
+  .orb.b {
+    width: 34%;
+    right: 10%;
+    top: 8%;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--c2) 70%);
+    opacity: 0.85;
+  }
+  .v1 .orb.a {
+    left: auto;
+    right: 8%;
+    top: 30%;
+    width: 48%;
+  }
+  .v1 .orb.b {
+    right: auto;
+    left: 14%;
+    top: 12%;
+    width: 30%;
+  }
+  .v2 .orb.a {
+    left: 30%;
+    top: 40%;
+    width: 60%;
+  }
+  .v2 .orb.b {
+    right: auto;
+    left: 8%;
+    top: 6%;
+    width: 26%;
+  }
+  .v3 .orb.a {
+    left: -6%;
+    top: 36%;
+    width: 50%;
+  }
+  .v3 .orb.b {
+    right: 16%;
+    top: 16%;
+    width: 42%;
+  }
+  .post-card:hover .orb.a {
+    transform: translate3d(6%, -6%, 0) scale(1.05);
+  }
+  .post-card:hover .orb.b {
+    transform: translate3d(-10%, 8%, 0) scale(0.95);
+  }
+
+  .cover-label {
+    position: absolute;
+    left: 18px;
+    bottom: 16px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+
+  .content {
+    padding: 24px 26px 30px;
+  }
+
+  .meta {
+    font-size: 13px;
+    color: var(--faint);
+    margin-bottom: 8px;
+  }
+  .meta span {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 22px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .desc {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  .featured {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+  }
+  .featured .cover {
+    aspect-ratio: auto;
+    min-height: 340px;
+  }
+  .featured .content {
+    padding: clamp(28px, 4vw, 52px);
+    align-self: center;
+  }
+  .featured h3 {
+    font-size: clamp(26px, 3vw, 36px);
+    line-height: 1.12;
+  }
+  .featured .desc {
+    font-size: 18px;
+  }
+
+  @media (max-width: 800px) {
+    .featured {
+      grid-template-columns: 1fr;
+    }
+    .featured .cover {
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+    }
+  }
+</style>

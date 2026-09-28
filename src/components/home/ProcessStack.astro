@@ -1,0 +1,223 @@
+---
+const steps = [
+  {
+    title: 'Listen',
+    text: 'We map what your business actually needs, not what’s trendy. Where you are, where you want to be, and what’s in the way.',
+    outputs: ['Needs mapped', 'Honest advice', 'Clear priorities'],
+  },
+  {
+    title: 'Design',
+    text: 'A clear proposal with scope, timeline and price, locked before anything gets built. No surprises halfway through.',
+    outputs: ['Scope', 'Timeline', 'Fixed price'],
+  },
+  {
+    title: 'Build',
+    text: 'Short sprints with a demo every week. You see it grow and steer while it takes shape.',
+    outputs: ['Weekly demos', 'Visible progress', 'Your feedback, built in'],
+  },
+  {
+    title: 'Launch +',
+    text: 'Go live, hand over, stay available. I don’t disappear after launch.',
+    outputs: ['Go-live', 'Proper handover', 'Ongoing support'],
+  },
+];
+---
+
+<section class="process night" data-theme="dark" data-scroll="sticky" data-stack style={`--n:${steps.length}`}>
+  <div class="pin">
+    <div class="container head">
+      <p class="eyebrow">How it works</p>
+      <h2 class="headline">Short cycles, visible progress, no&nbsp;surprises.</h2>
+    </div>
+
+    <div class="deck container">
+      {
+        steps.map((step, i) => (
+          <article class="step" data-stack-card style={`--enter:${i === 0 ? 1 : 0};--depth:0`}>
+            <div class="num">{String(i + 1).padStart(2, '0')}</div>
+            <div class="body">
+              <h3 class="title">{step.title}</h3>
+              <p>{step.text}</p>
+              <ul>
+                {step.outputs.map((o) => (
+                  <li>{o}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="progress" aria-hidden="true"><span></span></div>
+  </div>
+</section>
+
+<style>
+  .process {
+    height: calc(100vh + (var(--n) - 1) * 75vh);
+    position: relative;
+    background: var(--night);
+    color: var(--night-ink);
+  }
+
+  .headline {
+    color: #fff;
+  }
+
+  .pin {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(28px, 5vh, 56px);
+    overflow: clip;
+    padding-top: var(--nav-h);
+  }
+
+  .head {
+    text-align: center;
+  }
+
+  .headline {
+    font-size: clamp(32px, 4.6vw, 56px);
+  }
+
+  .deck {
+    margin-top: clamp(8px, 2vh, 24px);
+  }
+
+  .deck {
+    display: grid;
+    perspective: 1400px;
+    perspective-origin: 50% 10%;
+    max-width: calc(880px + var(--gutter) * 2);
+  }
+
+  /* Cards share one grid cell. scroll.ts feeds --enter (sliding up into place)
+     and --depth (how many cards now sit on top), which pushes a card back in space. */
+  .step {
+    grid-area: 1 / 1;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(20px, 4vw, 56px);
+    padding: clamp(28px, 4.5vw, 56px);
+    border-radius: var(--radius);
+    background: linear-gradient(160deg, #2a2a2f 0%, #1a1a1d 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -10px 60px rgba(0, 0, 0, 0.6);
+    transform-origin: 50% 0%;
+    transform: translate3d(
+        0,
+        calc((1 - var(--enter)) * 105vh + var(--depth) * -16px),
+        calc(var(--depth) * -80px)
+      )
+      rotateX(calc(var(--depth) * 3deg));
+    opacity: calc(1 - max(var(--depth) - 2.2, 0));
+    will-change: transform;
+  }
+
+  .step::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: #000;
+    opacity: calc(min(var(--depth), 2) * 0.28);
+    pointer-events: none;
+  }
+
+  .num {
+    font-family: var(--font-display);
+    font-size: clamp(44px, 7vw, 88px);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    background: var(--grad-light);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .title {
+    color: #fff;
+    margin-bottom: 14px;
+  }
+
+  .body p {
+    color: var(--night-muted);
+    font-size: clamp(17px, 1.6vw, 20px);
+    line-height: 1.5;
+    max-width: 560px;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+  }
+
+  li {
+    padding: 7px 13px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #e8e8ed;
+    font-size: 14px;
+  }
+
+  .progress {
+    width: min(220px, 50%);
+    height: 3px;
+    margin: 0 auto;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.14);
+    overflow: hidden;
+  }
+
+  .progress span {
+    display: block;
+    height: 100%;
+    background: var(--grad-light);
+    transform-origin: left;
+    transform: scaleX(var(--p));
+  }
+
+  @media (max-width: 640px) {
+    .step {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    li {
+      font-size: 13px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .process {
+      height: auto;
+    }
+    .pin {
+      position: static;
+      height: auto;
+      padding-block: var(--section);
+    }
+    .deck {
+      gap: 16px;
+    }
+    .step {
+      grid-area: auto;
+      transform: none;
+      opacity: 1;
+    }
+    .step::after {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import CTA from '../../components/CTA.astro';
+
+const posts = (await getCollection('insights', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const [featured, ...rest] = posts;
+---
+
+<Base
+  title="Insights"
+  description="Practical notes on websites, webshops, Odoo and Salesforce, and on connecting them."
+>
+  <section class="page-hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="container narrow">
+      <p class="eyebrow reveal">Insights</p>
+      <h1 class="display reveal" style="--d:1">Notes from the build.</h1>
+      <p class="lede reveal" style="--d:2">
+        Practical notes on websites, webshops, Odoo and Salesforce, and on making them work
+        together.
+      </p>
+    </div>
+  </section>
+
+  <section class="section list">
+    <div class="container">
+      {featured && <PostCard post={featured} featured />}
+      {
+        rest.length > 0 && (
+          <div class="grid grid-3 rest">
+            {rest.map((post, i) => (
+              <PostCard post={post} index={i} />
+            ))}
+          </div>
+        )
+      }
+      {posts.length === 0 && <p class="lede center">First posts coming soon.</p>}
+    </div>
+  </section>
+
+  <CTA
+    title="Have a question I should write about?"
+    text="Send it through. If it's useful to you, it's probably useful to others too."
+  />
+</Base>
+
+<style>
+  .list {
+    padding-top: 0;
+  }
+  .rest {
+    margin-top: clamp(16px, 2vw, 24px);
+  }
+</style>

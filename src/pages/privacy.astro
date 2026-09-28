@@ -1,0 +1,140 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { SITE, url } from '../config/site';
+
+const { legal, email, analyticsId, fullName } = SITE;
+---
+
+<Legal
+  title="Privacy policy"
+  description="How Sam Labenne handles personal information on this website and when you get in touch."
+  intro="This site collects as little as possible. There are no forms, no tracking by default, and your details are never sold."
+>
+  <h2>Who I am</h2>
+  <p>
+    This website belongs to {fullName} (“I”, “me”), an independent digital builder offering website,
+    webshop, Odoo and Salesforce services. I am responsible for (the “controller” of) the personal
+    information described here.
+  </p>
+  {
+    (legal.registration || legal.address) && (
+      <p>
+        {legal.registration && <>{legal.registration}. </>}
+        {legal.address && <>Business address: {legal.address}.</>}
+      </p>
+    )
+  }
+  <p>
+    Questions about privacy can go to <a href={`mailto:${email}`}>{email}</a>.
+  </p>
+
+  <h2>What I collect</h2>
+  <ul>
+    <li>
+      <strong>What you send me.</strong> This site has no forms. If you email me, I receive your
+      email address, your name and anything you choose to include in your message.
+    </li>
+    <li>
+      <strong>Technical information.</strong> When you visit, the hosting and network providers
+      automatically process technical data such as your IP address, browser type and the pages
+      requested, so the site can be delivered and kept secure. I don’t use this to identify you.
+    </li>
+    <li>
+      <strong>Cookies and similar technologies.</strong> Analytics cookies are only used if you
+      accept them. See the <a href={url('/cookies/')}>cookie policy</a> for details.
+    </li>
+  </ul>
+
+  <h2>How I use it, and why</h2>
+  <table>
+    <thead>
+      <tr><th>Purpose</th><th>Legal basis (GDPR)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Replying to your email and discussing a possible project</td>
+        <td>Steps you’ve asked me to take before a possible contract, and my legitimate interest in answering enquiries</td>
+      </tr>
+      <tr>
+        <td>Running and securing the website</td>
+        <td>My legitimate interest in operating a secure, working website</td>
+      </tr>
+      <tr>
+        <td>Understanding how the website is used (analytics)</td>
+        <td>Your consent, which you can withdraw at any time</td>
+      </tr>
+      <tr>
+        <td>Keeping records I’m required to keep</td>
+        <td>Legal obligation</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    I don’t sell personal information, I don’t use it for automated decision-making, and I won’t add
+    you to a mailing list.
+  </p>
+
+  <h2>Who I share it with</h2>
+  <p>Personal information is only shared with the services that make this site and my work possible:</p>
+  <ul>
+    <li>the website host, GitHub (GitHub Pages), and the domain and network provider, Cloudflare;</li>
+    <li>my email provider;</li>
+    {analyticsId && <li>Google, for website analytics, only if you accept analytics cookies;</li>}
+    <li>professional advisers, such as an accountant, where needed.</li>
+  </ul>
+  <p>
+    These providers may only use the information to provide their services. I may also disclose
+    information where the law requires it.
+  </p>
+
+  <h2>International transfers</h2>
+  <p>
+    Some of these providers are based outside the European Economic Area, including in the United
+    States. Where personal information is transferred abroad, it is protected by recognised
+    safeguards such as adequacy decisions (including the EU–US Data Privacy Framework, where a
+    provider is certified) or the European Commission’s Standard Contractual Clauses.
+  </p>
+
+  <h2>How long I keep it</h2>
+  <p>
+    I keep emails only as long as they’re useful to answer and follow up on your enquiry. If we work
+    together, I keep project correspondence and records for the length of the project and
+    afterwards as long as the law requires (for example, for tax and accounting). Otherwise I delete
+    them once they’re no longer needed.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>Under the GDPR you have the right to:</p>
+  <ul>
+    <li>access the personal information I hold about you;</li>
+    <li>have it corrected if it’s inaccurate, or deleted;</li>
+    <li>restrict or object to how I use it;</li>
+    <li>receive it in a portable format;</li>
+    <li>withdraw your consent at any time, where I rely on consent; and</li>
+    <li>complain to your local data protection authority.</li>
+  </ul>
+  <p>
+    If you’re outside the EU, you may have similar rights under your local law. To make a request,
+    email <a href={`mailto:${email}`}>{email}</a>. I’ll reply within one month and may need to
+    confirm your identity first.
+  </p>
+
+  <h2>Security</h2>
+  <p>
+    The website is served over an encrypted (HTTPS) connection and I take reasonable measures to
+    protect the information I hold. No system is completely secure, so please don’t email highly
+    sensitive information unless we’ve agreed a secure way to share it.
+  </p>
+
+  <h2>Links to other websites</h2>
+  <p>
+    This site links to other websites, such as Ksara Events. Their privacy practices are their own,
+    so please read their policies.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    I’ll update this policy when anything changes. The date at the top shows when it was last
+    revised.
+  </p>
+</Legal>

@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../config/site';
+---
+
+<Base title="Page not found">
+  <section class="page-hero not-found">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="container narrow">
+      <p class="eyebrow">404</p>
+      <h1 class="display">Lost in the pipeline.</h1>
+      <p class="lede">The page you’re looking for has moved or doesn’t exist.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={url('/')}>Back to home</a>
+        <a class="btn btn-ghost" href={url('/contact/')}>Get in touch</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    min-height: 80vh;
+    display: grid;
+    align-items: center;
+  }
+</style>

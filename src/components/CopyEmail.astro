@@ -1,0 +1,89 @@
+---
+import { Copy, Check } from '@lucide/astro';
+import { SITE } from '../config/site';
+
+interface Props {
+  label?: string;
+}
+const { label = SITE.email } = Astro.props;
+---
+
+<button type="button" class="copy-email link-arrow" data-copy-email={SITE.email}>
+  <span class="label">{label}</span>
+  <span class="icon copy"><Copy /></span>
+  <span class="icon done"><Check /></span>
+  <span class="toast" role="status" aria-live="polite"></span>
+</button>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((button) => {
+    const toast = button.querySelector<HTMLElement>('.toast')!;
+    button.addEventListener('click', async () => {
+      const email = button.dataset.copyEmail!;
+      try {
+        await navigator.clipboard.writeText(email);
+        button.classList.add('is-copied');
+        toast.textContent = 'Copied';
+        setTimeout(() => {
+          button.classList.remove('is-copied');
+          toast.textContent = '';
+        }, 1800);
+      } catch {
+        // Clipboard unavailable (e.g. insecure context): fall back to the mail app.
+        window.location.href = `mailto:${email}`;
+      }
+    });
+  });
+</script>
+
+<style>
+  .copy-email {
+    position: relative;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .icon {
+    display: inline-grid;
+  }
+
+  .icon :global(svg) {
+    width: 17px;
+    height: 17px;
+  }
+
+  .done,
+  .is-copied .copy {
+    display: none;
+  }
+
+  .is-copied .done {
+    display: inline-grid;
+  }
+
+  .toast {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    transform: translateX(-50%);
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .toast:empty {
+    padding: 0;
+  }
+
+  .is-copied .toast {
+    opacity: 1;
+  }
+</style>

@@ -1,0 +1,305 @@
+---
+import Logo from './Logo.astro';
+import { NAV, url, SITE } from '../config/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path.startsWith(url(href));
+---
+
+<header class="nav" data-nav>
+  <div class="nav-inner container">
+    <a href={url('/')} class="brand" aria-label={`${SITE.name}, home`}>
+      <Logo id="nav-logo" />
+      <span class="brand-name">Sam Labenne</span>
+    </a>
+
+    <nav aria-label="Main" class="nav-links">
+      <ul>
+        {
+          NAV.map((item) => (
+            <li>
+              <a
+                href={url(item.href)}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a class="btn btn-primary btn-sm nav-cta" href={url('/contact/')}>Let’s talk</a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
+      <span class="sr-only">Menu</span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="mobile-menu" hidden>
+    <nav aria-label="Mobile">
+      <ul>
+        <li style="--i:0"><a href={url('/')}>Home</a></li>
+        {
+          NAV.map((item, i) => (
+            <li style={`--i:${i + 1}`}>
+              <a href={url(item.href)}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="btn btn-primary" href={url('/contact/')} style={`--i:${NAV.length + 1}`}
+        >Start a project</a
+      >
+    </nav>
+  </div>
+</header>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-nav]')!;
+  const toggle = nav.querySelector<HTMLButtonElement>('.nav-toggle')!;
+  const menu = nav.querySelector<HTMLElement>('#mobile-menu')!;
+
+  function setOpen(open: boolean) {
+    toggle.setAttribute('aria-expanded', String(open));
+    nav.classList.toggle('is-open', open);
+    document.documentElement.classList.toggle('menu-open', open);
+    if (open) {
+      menu.hidden = false;
+      requestAnimationFrame(() => menu.classList.add('is-visible'));
+    } else {
+      menu.classList.remove('is-visible');
+      setTimeout(() => {
+        if (!nav.classList.contains('is-open')) menu.hidden = true;
+      }, 350);
+    }
+  }
+
+  toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('is-open')) setOpen(false);
+  });
+  window.matchMedia('(min-width: 820px)').addEventListener('change', (e) => {
+    if (e.matches) setOpen(false);
+  });
+
+  // Switch to the dark nav while it sits over a section marked data-theme="dark".
+  const darkSections = [...document.querySelectorAll<HTMLElement>('[data-theme="dark"]')];
+  const onScroll = () => {
+    nav.classList.toggle('is-scrolled', window.scrollY > 8);
+    const mid = nav.offsetHeight / 2;
+    nav.classList.toggle(
+      'is-dark',
+      darkSections.some((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top <= mid && r.bottom >= mid;
+      }),
+    );
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 100;
+    height: var(--nav-h);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid transparent;
+    transition:
+      border-color 0.3s,
+      background-color 0.3s;
+  }
+
+  .brand,
+  .nav-links a,
+  .nav-cta,
+  .nav-toggle .bar {
+    transition:
+      color 0.3s,
+      background-color 0.3s,
+      transform 0.35s var(--ease),
+      top 0.35s var(--ease);
+  }
+
+  .nav.is-scrolled {
+    border-bottom-color: var(--line);
+  }
+
+  .nav.is-open {
+    background: #fff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .nav.is-dark:not(.is-open) {
+    background: rgba(22, 22, 23, 0.72);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .is-dark:not(.is-open) .brand,
+  .is-dark:not(.is-open) .nav-links a {
+    color: #e8e8ed;
+  }
+
+  .is-dark:not(.is-open) .nav-links a:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .is-dark:not(.is-open) .nav-cta {
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .is-dark:not(.is-open) .nav-toggle .bar {
+    background: #fff;
+  }
+
+  .nav-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    margin-right: auto;
+  }
+
+  .nav-links ul {
+    display: flex;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 14px;
+    color: var(--ink-2);
+    transition:
+      color 0.2s,
+      background-color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--ink);
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .nav-links a[aria-current='page'] {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .nav-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .nav-toggle .bar {
+    position: absolute;
+    left: 13px;
+    width: 18px;
+    height: 1.5px;
+    border-radius: 2px;
+    background: var(--ink);
+    transition:
+      transform 0.35s var(--ease),
+      top 0.35s var(--ease);
+  }
+
+  .nav-toggle .bar:nth-of-type(2) {
+    top: 18px;
+  }
+  .nav-toggle .bar:nth-of-type(3) {
+    top: 25px;
+  }
+
+  .is-open .nav-toggle .bar:nth-of-type(2) {
+    top: 21.5px;
+    transform: rotate(45deg);
+  }
+  .is-open .nav-toggle .bar:nth-of-type(3) {
+    top: 21.5px;
+    transform: rotate(-45deg);
+  }
+
+  .mobile-menu {
+    position: fixed;
+    inset: var(--nav-h) 0 0;
+    height: calc(100dvh - var(--nav-h));
+    background: #fff;
+    padding: 24px var(--gutter) 48px;
+    overflow-y: auto;
+  }
+
+  .mobile-menu ul {
+    list-style: none;
+    margin: 0 0 32px;
+    padding: 0;
+  }
+
+  .mobile-menu li a {
+    display: block;
+    padding: 10px 0;
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+  }
+
+  .mobile-menu li,
+  .mobile-menu .btn {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition:
+      opacity 0.4s var(--ease),
+      transform 0.4s var(--ease);
+    transition-delay: calc(var(--i) * 35ms);
+  }
+
+  .mobile-menu.is-visible li,
+  .mobile-menu.is-visible .btn {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 819px) {
+    .nav-links,
+    .nav-cta {
+      display: none;
+    }
+    .nav-toggle {
+      display: block;
+    }
+  }
+
+  :global(html.menu-open) {
+    overflow: hidden;
+  }
+</style>

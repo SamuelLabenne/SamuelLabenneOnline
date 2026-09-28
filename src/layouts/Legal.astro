@@ -1,0 +1,63 @@
+---
+import Base from './Base.astro';
+import { SITE } from '../config/site';
+import { formatDate } from '../lib/format';
+
+interface Props {
+  title: string;
+  description: string;
+  intro: string;
+}
+const { title, description, intro } = Astro.props;
+---
+
+<Base title={title} description={description}>
+  <section class="page-hero legal-hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="container narrow">
+      <p class="eyebrow reveal">Legal</p>
+      <h1 class="headline reveal" style="--d:1">{title}</h1>
+      <p class="lede reveal" style="--d:2">{intro}</p>
+      <p class="updated reveal" style="--d:3">
+        Last updated {formatDate(new Date(SITE.policiesUpdated))}
+      </p>
+    </div>
+  </section>
+
+  <div class="container narrow">
+    <div class="prose legal-body">
+      <slot />
+    </div>
+  </div>
+</Base>
+
+<style>
+  .legal-hero {
+    text-align: left;
+    padding-bottom: clamp(32px, 4vw, 56px);
+  }
+
+  .legal-hero .lede {
+    margin-left: 0;
+  }
+
+  .updated {
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--faint);
+  }
+
+  .legal-body {
+    padding-bottom: var(--section);
+    font-size: 17px;
+  }
+
+  .legal-body :global(h2) {
+    font-size: clamp(22px, 2.4vw, 26px);
+    margin-top: 1.8em;
+  }
+
+  .legal-body :global(h2:first-child) {
+    margin-top: 0;
+  }
+</style>

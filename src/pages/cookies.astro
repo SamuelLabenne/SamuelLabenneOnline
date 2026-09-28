@@ -1,0 +1,91 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { SITE, url } from '../config/site';
+
+const { email, analyticsId } = SITE;
+---
+
+<Legal
+  title="Cookie policy"
+  description="Which cookies and similar technologies this website uses, and how to change your choice."
+  intro="The site works without any tracking. Analytics cookies are only ever set if you say yes."
+>
+  <h2>What cookies are</h2>
+  <p>
+    Cookies are small files a website stores in your browser. Similar technologies, such as your
+    browser’s local storage, work in much the same way. This policy covers both.
+  </p>
+
+  <h2>What this site uses</h2>
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Type and purpose</th><th>Kept for</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>sl-consent</code></td>
+        <td>
+          <strong>Strictly necessary.</strong> Local storage entry that remembers whether you
+          accepted or declined analytics cookies, so you aren’t asked on every page.
+        </td>
+        <td>12 months</td>
+      </tr>
+      {
+        analyticsId && (
+          <>
+            <tr>
+              <td><code>_ga</code></td>
+              <td>
+                <strong>Analytics, only with consent.</strong> Google Analytics cookie that tells
+                visits apart, so I can count visitors and see which pages are useful.
+              </td>
+              <td>2 years</td>
+            </tr>
+            <tr>
+              <td><code>_ga_*</code></td>
+              <td>
+                <strong>Analytics, only with consent.</strong> Google Analytics cookie that keeps
+                track of the current session.
+              </td>
+              <td>2 years</td>
+            </tr>
+          </>
+        )
+      }
+    </tbody>
+  </table>
+  {
+    !analyticsId && (
+      <p>
+        This site doesn’t currently use any analytics or advertising cookies. If I add analytics,
+        they will only be set after you accept them, and they’ll be listed here.
+      </p>
+    )
+  }
+  <p>
+    There are no advertising cookies, and fonts are hosted on this site rather than loaded from a
+    third party.
+  </p>
+
+  <h2>Your choice</h2>
+  <p>
+    When you first visit, you’re asked whether you accept analytics cookies. Declining has no effect on
+    how the site works. You can change your mind at any time:
+  </p>
+  <p>
+    <button type="button" class="btn btn-primary btn-sm" data-cookie-settings>
+      Change cookie settings
+    </button>
+  </p>
+  <p>
+    You can also block or delete cookies in your browser settings. You’ll be asked again after 12
+    months, or if this policy changes in a way that affects your choice.
+  </p>
+
+  <h2>More information</h2>
+  <p>
+    For how personal information is handled more broadly, see the
+    <a href={url('/privacy/')}>privacy policy</a>. Questions are welcome at
+    <a href={`mailto:${email}`}>{email}</a>.
+  </p>
+</Legal>

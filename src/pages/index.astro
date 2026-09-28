@@ -1,0 +1,465 @@
+---
+import { getCollection } from 'astro:content';
+import { ChevronRight, ArrowUpRight, Lock } from '@lucide/astro';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
+import Statement from '../components/home/Statement.astro';
+import Facts from '../components/Facts.astro';
+import StackGrid from '../components/home/StackGrid.astro';
+import ProcessStack from '../components/home/ProcessStack.astro';
+import PostCard from '../components/PostCard.astro';
+import CTA from '../components/CTA.astro';
+import { SITE, url } from '../config/site';
+import { services } from '../data/services';
+
+const posts = (await getCollection('insights', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const confidential = [
+  { platform: 'Odoo', kind: 'ERP rollout' },
+  { platform: 'Salesforce', kind: 'CRM build' },
+  { platform: 'Shopify', kind: 'Webshop' },
+];
+---
+
+<Base>
+  <Hero />
+
+  <Statement
+    text="I design and build digital things that work as well as they look: sites, shops, ERPs and CRMs. No agencies, no layers, no telephone game. You talk to the person doing the work."
+    highlight="the person doing the work."
+  />
+
+  <section class="section facts-section">
+    <div class="container">
+      <Facts />
+    </div>
+  </section>
+
+  <section class="section soft stack-section">
+    <div class="container">
+      <div class="section-head center">
+        <p class="eyebrow reveal">Services</p>
+        <h2 class="headline reveal" style="--d:1">Four disciplines, one goal.</h2>
+        <p class="lede reveal" style="--d:2">
+          A digital operation that actually works, front of house and back office.
+        </p>
+      </div>
+      <StackGrid />
+
+      <div class="disciplines">
+        {
+          services.map((s, i) => (
+            <a href={url(`/services/#${s.id}`)} class="discipline reveal" style={`--d:${i}`}>
+              <span class="num">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{s.title}</h3>
+              <p class="kicker">{s.kicker}</p>
+              <p>{s.summary}</p>
+              <span class="link-arrow">
+                Learn more <ChevronRight />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="work" class="section work-section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow reveal">Selected work</p>
+        <h2 class="headline reveal" style="--d:1">One project I can show you.</h2>
+        <p class="lede reveal" style="--d:2">
+          The rest live behind NDAs. Happy to walk you through them in person.
+        </p>
+      </div>
+
+      <div class="work">
+        <div class="featured-wrap reveal">
+          <a class="featured" href={SITE.work.url} target="_blank" rel="noopener" data-tilt="4">
+            <div class="cover" aria-hidden="true">
+              <div class="phone">
+                <div class="phone-top">
+                  <strong>ksara</strong>
+                  <span class="plus">+</span>
+                </div>
+                <div class="event e1">
+                  <span class="date"><b>12</b>Oct</span>
+                  <div>
+                    <div class="ev-title">Rooftop drinks</div>
+                    <div class="ev-meta">8 friends going</div>
+                  </div>
+                </div>
+                <div class="event e2">
+                  <span class="date"><b>19</b>Oct</span>
+                  <div>
+                    <div class="ev-title">Sunday hike</div>
+                    <div class="ev-meta">5 friends going</div>
+                  </div>
+                </div>
+                <div class="event e3">
+                  <span class="date"><b>02</b>Nov</span>
+                  <div>
+                    <div class="ev-title">Game night</div>
+                    <div class="ev-meta">Invite sent</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="featured-body">
+              <span class="live"><span class="live-dot"></span>Live</span>
+              <h3>{SITE.work.name}</h3>
+              <p>
+                An events platform for creating events and sharing them with friends. My own
+                venture: designed, built and launched end to end, and fully live.
+              </p>
+              <span class="link-arrow">
+                Visit ksaraevents.com <ArrowUpRight />
+              </span>
+            </div>
+          </a>
+        </div>
+
+        <div class="nda-list">
+          {
+            confidential.map((c, i) => (
+              <div class="nda reveal" style={`--d:${i + 1}`}>
+                <span class="lock">
+                  <Lock />
+                </span>
+                <div>
+                  <h3>
+                    {c.platform} <span>· {c.kind}</span>
+                  </h3>
+                  <p>Client work, confidential. References available on request.</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ProcessStack />
+
+  {
+    posts.length > 0 && (
+      <section class="section soft">
+        <div class="container">
+          <div class="insights-head">
+            <div>
+              <p class="eyebrow reveal">Insights</p>
+              <h2 class="headline reveal" style="--d:1">
+                Notes from the build.
+              </h2>
+            </div>
+            <a class="link-arrow reveal" href={url('/insights/')}>
+              All insights <ChevronRight />
+            </a>
+          </div>
+          <div class="grid grid-3">
+            {posts.map((post, i) => (
+              <PostCard post={post} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CTA />
+</Base>
+
+<style>
+  .facts-section {
+    padding-top: 0;
+  }
+
+  .stack-section {
+    overflow: hidden;
+  }
+
+  /* ── Discipline cards ── */
+  .disciplines {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(14px, 1.6vw, 20px);
+    margin-top: clamp(48px, 6vw, 80px);
+  }
+
+  .discipline {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: clamp(24px, 2.6vw, 32px);
+    border-radius: var(--radius);
+    background: #fff;
+    transition:
+      opacity 1s var(--ease),
+      transform 1.2s var(--ease),
+      box-shadow 0.5s var(--ease);
+    transition-delay: calc(var(--d, 0) * 90ms), calc(var(--d, 0) * 90ms), 0s;
+  }
+
+  .discipline:hover {
+    box-shadow: var(--shadow);
+  }
+
+  .num {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+
+  .discipline h3 {
+    font-size: 22px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .kicker {
+    margin: 4px 0 12px;
+    font-size: 14px;
+    color: var(--faint);
+  }
+
+  .discipline p:not(.kicker) {
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  .discipline .link-arrow {
+    margin-top: auto;
+    padding-top: 20px;
+    font-size: 16px;
+  }
+
+  @media (max-width: 1000px) {
+    .disciplines {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .disciplines {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── Work ── */
+  .work {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: clamp(16px, 2vw, 24px);
+    align-items: stretch;
+  }
+
+  .featured {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .featured-wrap {
+    height: 100%;
+  }
+
+  .cover {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 300px;
+    padding: 36px 20px 0;
+    overflow: hidden;
+    background: var(--grad-soft);
+  }
+
+  .phone {
+    width: min(280px, 80%);
+    padding: 16px 14px 20px;
+    border-radius: 30px 30px 0 0;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-bottom: 0;
+    box-shadow: var(--shadow);
+    transform: translateY(8px);
+    transition: transform 0.8s var(--ease);
+  }
+
+  .featured:hover .phone {
+    transform: translateY(0);
+  }
+
+  .phone-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px 12px;
+  }
+
+  .phone-top strong {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: -0.03em;
+  }
+
+  .plus {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .event {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 16px;
+    background: var(--bg-soft);
+    margin-top: 8px;
+    font-size: 13px;
+  }
+
+  .date {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--grad-light);
+    font-size: 10px;
+    line-height: 1.1;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .date b {
+    display: block;
+    font-size: 15px;
+  }
+
+  .ev-title {
+    font-weight: 600;
+  }
+
+  .ev-meta {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .featured-body {
+    padding: clamp(24px, 3vw, 36px);
+  }
+
+  .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #e9f8f1;
+    color: #0e8a5f;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22bb73;
+  }
+
+  .featured h3 {
+    margin: 14px 0 10px;
+    font-size: clamp(26px, 3vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  .featured p {
+    color: var(--muted);
+    max-width: 520px;
+  }
+
+  .featured .link-arrow {
+    margin-top: 20px;
+  }
+
+  .nda-list {
+    display: grid;
+    gap: clamp(16px, 2vw, 24px);
+  }
+
+  .nda {
+    display: flex;
+    gap: 18px;
+    padding: clamp(22px, 2.6vw, 30px);
+    border-radius: var(--radius);
+    background: var(--bg-soft);
+  }
+
+  .lock {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: #fff;
+    color: var(--muted);
+  }
+
+  .lock :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+
+  .nda h3 {
+    font-size: 20px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+
+  .nda h3 span {
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .nda p {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  @media (max-width: 900px) {
+    .work {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .insights-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: clamp(40px, 5vw, 64px);
+  }
+</style>

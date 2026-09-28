@@ -1,0 +1,206 @@
+---
+import { Mail, Clock, Coffee } from '@lucide/astro';
+import Base from '../layouts/Base.astro';
+import CopyEmail from '../components/CopyEmail.astro';
+import { SITE, mailto } from '../config/site';
+
+const include = [
+  'What you’d like to build or improve',
+  'The tools you use today',
+  'Your timeline, and a budget range if you have one',
+];
+
+const steps = [
+  'I reply, usually within a day.',
+  'We map what your business actually needs.',
+  'You get a clear proposal: scope, timeline and price.',
+];
+---
+
+<Base
+  title="Contact"
+  description="Available for new projects. Email Sam Labenne about websites, webshops, Odoo or Salesforce."
+>
+  <section class="page-hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="container narrow">
+      <p class="eyebrow reveal"><span class="dot" aria-hidden="true"></span>Available for new projects</p>
+      <h1 class="display reveal" style="--d:1">Let’s build something that works.</h1>
+    </div>
+  </section>
+
+  <section class="section contact-section">
+    <div class="container narrow">
+      <div class="mail-card reveal" data-tilt="3">
+        <span class="mail-icon" aria-hidden="true"><Mail /></span>
+        <a class="address" href={mailto()}>{SITE.email}</a>
+        <div class="actions center">
+          <a class="btn btn-primary" href={mailto()}>Email me</a>
+          <CopyEmail label="Copy address" />
+        </div>
+        <div class="notes">
+          <span><Clock /> Usually replies within a day.</span>
+          <span><Coffee /> Coffee works too.</span>
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="reveal" style="--d:1">
+          <h2>Helpful to include</h2>
+          <ul class="bullets">
+            {include.map((line) => <li>{line}</li>)}
+          </ul>
+        </div>
+        <div class="reveal" style="--d:2">
+          <h2>What happens next</h2>
+          <ol class="steps">
+            {steps.map((s) => <li>{s}</li>)}
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #34c47c;
+  }
+
+  .contact-section {
+    padding-top: 0;
+  }
+
+  .mail-card {
+    text-align: center;
+    padding: clamp(36px, 6vw, 72px) clamp(20px, 4vw, 48px);
+    border-radius: var(--radius);
+    background: var(--grad-soft);
+  }
+
+  .mail-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    background: var(--grad-light);
+    margin-bottom: 24px;
+  }
+
+  .mail-icon :global(svg) {
+    width: 28px;
+    height: 28px;
+  }
+
+  .address {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(26px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    word-break: break-word;
+  }
+
+  .address:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+
+  .mail-card .actions {
+    margin-top: 32px;
+  }
+
+  .notes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 28px;
+    margin-top: 28px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  .notes span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .notes :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 5vw, 64px);
+    margin-top: clamp(48px, 6vw, 80px);
+  }
+
+  .columns h2 {
+    font-size: 21px;
+    font-weight: 650;
+    margin-bottom: 16px;
+  }
+
+  .bullets {
+    margin: 0;
+    padding-left: 1.2em;
+    display: grid;
+    gap: 10px;
+    color: var(--ink-2);
+  }
+
+  .bullets li::marker {
+    color: var(--accent);
+  }
+
+  .steps {
+    list-style: none;
+    counter-reset: step;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+
+  .steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 12px;
+    color: var(--ink-2);
+  }
+
+  .steps li::before {
+    content: counter(step);
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--grad-light);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .columns {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

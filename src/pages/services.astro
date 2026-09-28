@@ -1,0 +1,678 @@
+---
+import {
+  Check,
+  ChevronRight,
+  PenTool,
+  ShoppingBag,
+  Boxes,
+  Cloud,
+} from '@lucide/astro';
+import Base from '../layouts/Base.astro';
+import CTA from '../components/CTA.astro';
+import { mailto } from '../config/site';
+import { services } from '../data/services';
+
+const icons = { websites: PenTool, webshops: ShoppingBag, odoo: Boxes, salesforce: Cloud };
+
+const odooModules = ['Sales', 'Inventory', 'Invoicing', 'Accounting', 'Custom module'];
+const stages = [
+  { name: 'Lead', count: 42, w: 100 },
+  { name: 'Qualified', count: 23, w: 62 },
+  { name: 'Proposal', count: 11, w: 38 },
+  { name: 'Closed won', count: 7, w: 24 },
+];
+
+const faqs = [
+  {
+    q: 'Who will I be working with?',
+    a: 'Me. No agencies, no layers, no telephone game: you talk to the person doing the work, from the first call to launch and beyond.',
+  },
+  {
+    q: 'How do you price a project?',
+    a: 'After a first conversation you get a clear proposal with scope, timeline and price, locked before I start building. No open-ended surprises.',
+  },
+  {
+    q: 'How will I see progress?',
+    a: 'Short sprints with a demo every week. You see the work grow and can steer while it takes shape.',
+  },
+  {
+    q: 'Can you connect my webshop to Odoo or Salesforce?',
+    a: 'Yes, and that’s the point of doing all four. Orders, customers and stock can flow from the front of house to the back office without anyone re-typing them.',
+  },
+  {
+    q: 'What happens after launch?',
+    a: 'I hand everything over properly and stay available for fixes, improvements and new ideas. I don’t disappear after launch.',
+  },
+];
+---
+
+<Base
+  title="Services"
+  description="Website creation, webshop setup on Wix and Shopify, Odoo implementation and Salesforce implementation. One partner from first pixel to signed invoice."
+>
+  <section class="page-hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="container narrow">
+      <p class="eyebrow reveal">Services</p>
+      <h1 class="display reveal" style="--d:1">Four disciplines.<br />One goal.</h1>
+      <p class="lede reveal" style="--d:2">
+        A digital operation that actually works, front of house and back office. Pick one
+        discipline, or let them work together.
+      </p>
+      <nav class="jump reveal" style="--d:3" aria-label="Services on this page">
+        {services.map((s) => <a href={`#${s.id}`}>{s.title}</a>)}
+      </nav>
+    </div>
+  </section>
+
+  {
+    services.map((s, i) => {
+      const Icon = icons[s.id as keyof typeof icons];
+      return (
+        <section id={s.id} class:list={['section', 'service', { soft: i % 2 === 1 }]}>
+          <div class:list={['container', 'split', { flip: i % 2 === 1 }]}>
+            <div class="copy">
+              <span class="icon-chip reveal">
+                <Icon />
+              </span>
+              <p class="eyebrow reveal">
+                {String(i + 1).padStart(2, '0')} · {s.title} <span class="kicker">({s.kicker})</span>
+              </p>
+              <h2 class="headline reveal" style="--d:1">
+                {s.headline}
+              </h2>
+              <p class="lede reveal" style="--d:2">
+                {s.text}
+              </p>
+              <ul class="check-list reveal" style="--d:3">
+                {s.points.map((p) => (
+                  <li>
+                    <Check />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+              <div class="tags reveal" style="--d:4">
+                {s.tags.map((t) => (
+                  <span class="tag">{t}</span>
+                ))}
+              </div>
+            </div>
+
+            <div
+              class="visual"
+              data-scroll="enter"
+              data-start="1"
+              data-end="0.4"
+              style={`--dir:${i % 2 === 1 ? -1 : 1}`}
+              aria-hidden="true"
+            >
+              <div class="panel">
+                {s.id === 'websites' && (
+                  <div class="site">
+                    <div class="site-nav" style="--j:0">
+                      <span class="logo-dot" />
+                      <i />
+                      <i />
+                      <i />
+                      <b />
+                    </div>
+                    <div class="site-hero" style="--j:1">
+                      <i class="h1" />
+                      <i class="h2" />
+                      <b />
+                    </div>
+                    <div class="site-cards">
+                      <span style="--j:2" />
+                      <span style="--j:2.5" />
+                      <span style="--j:3" />
+                    </div>
+                    <div class="site-badges" style="--j:4">
+                      <span>Responsive</span>
+                      <span>SEO-ready</span>
+                      <span>Fast</span>
+                    </div>
+                  </div>
+                )}
+                {s.id === 'webshops' && (
+                  <div class="checkout">
+                    <div class="line item" style="--j:0">
+                      <span class="thumb" />
+                      <div>
+                        <strong>Linen Overshirt</strong>
+                        <em>Size M · Sage</em>
+                      </div>
+                      <span>€89.00</span>
+                    </div>
+                    <div class="line" style="--j:1">
+                      <span>Subtotal</span>
+                      <span>€89.00</span>
+                    </div>
+                    <div class="line" style="--j:1.5">
+                      <span>Shipping</span>
+                      <span>Free</span>
+                    </div>
+                    <div class="line" style="--j:2">
+                      <span>VAT included</span>
+                      <span>€15.45</span>
+                    </div>
+                    <div class="line total" style="--j:2.5">
+                      <span>Total</span>
+                      <span>€89.00</span>
+                    </div>
+                    <div class="pay" style="--j:3">Pay now</div>
+                    <div class="methods" style="--j:3.5">
+                      <span>Card</span>
+                      <span>PayPal</span>
+                      <span>Apple Pay</span>
+                    </div>
+                  </div>
+                )}
+                {s.id === 'odoo' && (
+                  <div class="modules">
+                    <div class="mod-head">Apps installed</div>
+                    {odooModules.map((m, j) => (
+                      <div class="mod" style={`--j:${j}`}>
+                        <span>{m}</span>
+                        <span class="switch" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {s.id === 'salesforce' && (
+                  <div class="pipe">
+                    <div class="mod-head">Opportunity pipeline</div>
+                    {stages.map((st, j) => (
+                      <div class="stage-row" style={`--j:${j}`}>
+                        <span>{st.name}</span>
+                        <b style={`--w:${st.w}%`} />
+                        <em>{st.count}</em>
+                      </div>
+                    ))}
+                    <div class="flow-badge" style="--j:4">
+                      <Check /> Follow-up flow runs automatically
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    })
+  }
+
+  <section class="section soft">
+    <div class="container narrow">
+      <div class="section-head center">
+        <p class="eyebrow reveal">FAQ</p>
+        <h2 class="headline reveal" style="--d:1">Good questions.</h2>
+      </div>
+      <div class="faq">
+        {
+          faqs.map((f, i) => (
+            <details class="reveal" style={`--d:${i}`}>
+              <summary>
+                {f.q}
+                <span class="plus" aria-hidden="true" />
+              </summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+      <p class="center faq-more reveal">
+        <a class="link-arrow" href={mailto('Question')}>Ask me anything <ChevronRight /></a>
+      </p>
+    </div>
+  </section>
+
+  <CTA />
+</Base>
+
+<style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+  }
+
+  .jump a {
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--bg-soft);
+    font-size: 15px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+
+  .jump a:hover {
+    background: #e8e8ed;
+  }
+
+  /* ── Service rows ── */
+  .service {
+    overflow: hidden;
+  }
+
+  .page-hero + .service {
+    padding-top: clamp(40px, 6vw, 80px);
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 7vw, 100px);
+    align-items: center;
+  }
+
+  .split.flip .copy {
+    order: 2;
+  }
+
+  .copy .icon-chip {
+    display: grid;
+    margin-bottom: 20px;
+  }
+
+  .kicker {
+    color: var(--faint);
+    font-weight: 500;
+  }
+
+  .copy .lede {
+    margin-top: 20px;
+    font-size: clamp(18px, 1.8vw, 21px);
+  }
+
+  .copy .headline {
+    font-size: clamp(34px, 4.4vw, 54px);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  .soft .tag {
+    background: #fff;
+  }
+
+  .visual {
+    perspective: 1200px;
+  }
+
+  /* Panels swing in from the side and settle flat as they scroll into view. */
+  .panel {
+    --q: calc(1 - var(--p));
+    border-radius: var(--radius);
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-lg);
+    padding: clamp(24px, 3.5vw, 44px);
+    min-height: 380px;
+    display: grid;
+    align-items: center;
+    transform: rotateY(calc(var(--q) * -22deg * var(--dir))) rotateX(calc(var(--q) * 8deg))
+      translate3d(calc(var(--q) * 60px * var(--dir)), 0, calc(var(--q) * -120px));
+    opacity: calc(0.2 + var(--p) * 0.8);
+  }
+
+  .soft .panel {
+    border-color: transparent;
+  }
+
+  /* Items inside each panel arrive in sequence. */
+  [style*='--j'] {
+    --t: clamp(0, calc(var(--p) * 5 - var(--j) * 0.7 - 0.6), 1);
+    opacity: var(--t);
+    transform: translate3d(0, calc((1 - var(--t)) * 16px), 0);
+  }
+
+  /* Website wireframe */
+  .site {
+    display: grid;
+    gap: 14px;
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .site-nav i,
+  .site-hero i {
+    display: block;
+    height: 8px;
+    border-radius: 4px;
+    background: #e6e6ea;
+  }
+
+  .site-nav i {
+    width: 38px;
+  }
+
+  .site-nav i:nth-of-type(1) {
+    margin-left: auto;
+  }
+
+  .site-nav b,
+  .site-hero b {
+    display: block;
+    width: 64px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--ink);
+  }
+
+  .logo-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    background: var(--grad-light);
+  }
+
+  .site-hero {
+    display: grid;
+    gap: 10px;
+    justify-items: start;
+    padding: 28px 22px;
+    border-radius: 16px;
+    background: var(--grad-soft);
+  }
+
+  .site-hero .h1 {
+    width: 70%;
+    height: 16px;
+    background: var(--ink);
+    opacity: 0.85;
+  }
+
+  .site-hero .h2 {
+    width: 50%;
+    height: 10px;
+    background: #cfd4cc;
+  }
+
+  .site-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .site-cards span {
+    height: 70px;
+    border-radius: 12px;
+    background: var(--bg-soft);
+  }
+
+  .site-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .site-badges span {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #e9f8f1;
+    color: #0e8a5f;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* Checkout */
+  .checkout {
+    display: grid;
+    gap: 12px;
+    font-size: 15px;
+  }
+
+  .line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    color: var(--ink-2);
+  }
+
+  .line.item {
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .line.item div {
+    margin-right: auto;
+    display: grid;
+  }
+
+  .line.item em {
+    font-style: normal;
+    font-size: 13px;
+    color: var(--faint);
+  }
+
+  .thumb {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background:
+      radial-gradient(circle at 50% 45%, #9ee0b8 0 32%, transparent 33%),
+      linear-gradient(160deg, #eefaf3, #dcf3e6);
+  }
+
+  .line.total {
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .pay {
+    margin-top: 6px;
+    padding: 13px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .methods {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .methods span {
+    padding: 5px 11px;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Odoo apps */
+  .modules,
+  .pipe {
+    display: grid;
+    gap: 10px;
+  }
+
+  .mod-head {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--faint);
+    margin-bottom: 4px;
+  }
+
+  .mod {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    border-radius: 14px;
+    background: var(--bg-soft);
+    font-weight: 600;
+  }
+
+  .switch {
+    position: relative;
+    width: 40px;
+    height: 24px;
+    border-radius: 999px;
+    background: #34c47c;
+  }
+
+  .switch::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Salesforce pipeline */
+  .stage-row {
+    display: grid;
+    grid-template-columns: 90px 1fr 28px;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .stage-row b {
+    height: 12px;
+    width: var(--w);
+    border-radius: 99px;
+    background: var(--grad-bar);
+  }
+
+  .stage-row em {
+    font-style: normal;
+    color: var(--faint);
+    text-align: right;
+  }
+
+  .flow-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: #e9f8f1;
+    color: #0e8a5f;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .flow-badge :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (max-width: 860px) {
+    .split {
+      grid-template-columns: 1fr;
+    }
+    .split.flip .copy {
+      order: 0;
+    }
+    .panel {
+      min-height: 0;
+    }
+  }
+
+  /* ── FAQ ── */
+  .faq {
+    display: grid;
+    gap: 12px;
+  }
+
+  details {
+    background: #fff;
+    border-radius: 20px;
+    interpolate-size: allow-keywords;
+  }
+
+  details::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height 0.4s var(--ease),
+      content-visibility 0.4s allow-discrete;
+  }
+
+  details[open]::details-content {
+    height: auto;
+  }
+
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 26px;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .plus {
+    position: relative;
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--bg-soft);
+  }
+
+  .plus::before,
+  .plus::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 12px;
+    height: 1.5px;
+    margin: -0.75px 0 0 -6px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform 0.35s var(--ease);
+  }
+
+  .plus::after {
+    transform: rotate(90deg);
+  }
+
+  details[open] .plus::after {
+    transform: rotate(0deg);
+  }
+
+  details p {
+    padding: 0 26px 24px;
+    color: var(--muted);
+    max-width: 640px;
+  }
+
+  .faq-more {
+    margin-top: 40px;
+  }
+</style>
