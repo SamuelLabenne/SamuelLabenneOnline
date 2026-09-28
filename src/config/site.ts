@@ -8,9 +8,8 @@ export const SITE = {
   email: 'labenne.sam@gmail.com',
   linkedin: 'https://www.linkedin.com/in/samuel-labenne-679512225/',
   work: { name: 'Ksara Events', url: 'https://ksaraevents.com' },
-  // Keep search engines out while the site lives on the github.io staging URL.
-  // Flip to true at domain launch.
-  indexable: false,
+  // Set to false to keep search engines out (e.g. while testing a redesign).
+  indexable: true,
   // Google Analytics 4 measurement ID (e.g. 'G-XXXXXXXXXX'). Only loaded after a
   // visitor accepts cookies in the consent banner. Empty = no analytics at all.
   analyticsId: '',
